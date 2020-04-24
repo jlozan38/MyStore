@@ -24,17 +24,26 @@ const routes = [
   {
     path: "/myorders",
     name: "MyOrders",
-    component: MyOrders
+    component: MyOrders,
+    meta: {
+      requiresRole: "user"
+    }
   },
   {
     path: "/cart",
     name: "Cart",
-    component: Cart
+    component: Cart,
+    meta: {
+      requiresRole: "user"
+    }
   },
   {
     path: "/inventory",
     name: "Inventory",
-    component: Inventory
+    component: Inventory,
+    meta: {
+      requiresRole: "admin"
+    }
   }
 ];
 
@@ -55,7 +64,7 @@ router.beforeEach((to, from, next) => {
       next("/login");
     }
   } else {
-    next(); // make sure to always call next()!
+    next(); 
   }
 });
 
