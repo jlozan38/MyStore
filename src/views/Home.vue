@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-row>
-      <h1>Welcome to the Twice Shop</h1>
+      <h1>Welcome to HungryGhost Records</h1>
     </v-row>
     <v-row>
       <v-col
@@ -12,9 +12,16 @@
         lg="4"
       >
         <v-card>
-          <v-card-title class="headline">{{ product.name }}</v-card-title>
+          <v-img
+            class="white--text align-end"
+            height="200px"
+            src="https://i1.sndcdn.com/artworks-000603520207-y9sj4i-t500x500.jpg"
+          >
+          </v-img>
+          <v-card-title class="headline">{{ product.artistname }}</v-card-title>
           <v-card-subtitle>
             <v-container>
+              <p class="title">{{ product.albumname }}</p>
               <v-row>
                 <p class="title">${{ product.price }}</p>
                 <v-spacer />
@@ -28,6 +35,31 @@
             </v-container>
           </v-card-subtitle>
           <v-card-text class="mt-n6">{{ product.description }}</v-card-text>
+          <v-spacer></v-spacer>
+          <v-card-actions>
+            
+            <v-spacer></v-spacer>
+
+            <v-btn icon @click="show = !show">
+              <v-icon>{{
+                show ? "mdi-chevron-up" : "mdi-chevron-down"
+              }}</v-icon>
+            </v-btn>
+          </v-card-actions>
+
+          <v-expand-transition>
+            <div v-show="show">
+              <v-divider></v-divider>
+
+              <v-card-text>
+                <v-row align="right">
+                  <v-subheader>TRACKLIST </v-subheader>
+                <v-list-item>01. FEEL SPECIAL 02. RAINBOW 03. GET LOUD 04. TRICK IT
+                05. LOVE FOOLISH 06. 21:29 07. BREAKTHROUGH (Korean Ver.)</v-list-item>
+                </v-row>
+              </v-card-text>
+            </div>
+          </v-expand-transition>
           <v-card-actions>
             <v-btn
               v-if="user"
@@ -63,6 +95,7 @@ export default {
   data() {
     return {
       products: [],
+      show: false
     };
   },
   computed: {

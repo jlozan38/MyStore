@@ -6,10 +6,21 @@
         class="text-none font-weight-light headline"
         @click="$router.push('/')"
       >
-        <span class="font-weight-regular">Twice Shop</span>
+        <span class="font-weight-regular">HungryGhost Records</span>
       </v-btn>
     </v-toolbar-title>
 
+    <v-spacer></v-spacer>
+      <v-col class="pt-10" cols="20" sm="5" md="5">
+        <v-text-field
+          type="text"
+          :value="searchItem"
+          class="form-input"
+          placeholder="Please Enter Artist or Album Name"
+          @change="setSearchItem"
+          solo
+        ></v-text-field>
+      </v-col>
     <v-spacer></v-spacer>
 
     <v-btn v-if="!user" to="/login" text>
@@ -34,6 +45,11 @@
           <v-list-item>
             <v-list-item-title>
               <v-btn block text to="/myorders">My Orders</v-btn>
+            </v-list-item-title>
+          </v-list-item>
+          <v-list-item>
+            <v-list-item-title>
+              <v-btn block text to="/merchandise">Merchandise</v-btn>
             </v-list-item-title>
           </v-list-item>
           <v-list-item>
@@ -71,12 +87,18 @@ export default {
   computed: {
     ...mapGetters({
       user: "getUser"
-    })
+    }),
+    searchItem() {
+      return this.$store.getters.getSearchItem;
+    }
   },
   updated() {
     this.bind();
   },
   methods: {
+    setSearchItem(event) {
+      this.$store.dispatch("setSearchItem", event.target.value);
+    },
     async logOut() {
       await this.$firebase.auth().signOut();
       this.setUser("");

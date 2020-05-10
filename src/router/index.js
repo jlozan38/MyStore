@@ -5,14 +5,20 @@ import Login from "../views/Login.vue";
 import MyOrders from "../views/MyOrders.vue";
 import Cart from "../views/Cart.vue";
 import Inventory from "../views/Inventory.vue";
-
+import Enter from "../views/EnterPage.vue";
 import store from "../store";
+import Merchandise from "../views/Merchandise.vue";
 
 Vue.use(VueRouter);
 
 const routes = [
   {
     path: "/",
+    name: "Enter",
+    component: Enter
+  },
+  {
+    path: "/Home",
     name: "Home",
     component: Home
   },
@@ -20,6 +26,11 @@ const routes = [
     path: "/login",
     name: "Login",
     component: Login
+  },
+  {
+    path: "/Merchandise",
+    name: "Merchandise",
+    component: Merchandise
   },
   {
     path: "/myorders",

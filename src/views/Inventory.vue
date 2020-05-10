@@ -9,11 +9,23 @@
           <v-card-title class="headline">Add New Product</v-card-title>
           <v-card-text>
             <v-form>
-              <v-text-field v-model="newProduct.name" label="Name" />
+              <v-text-field
+                v-model="newProduct.artistname"
+                label="Arist Name"
+              />
+              <v-text-field v-model="newProduct.albumname" label="Album Name" />
               <v-textarea
                 v-model="newProduct.description"
                 label="Description"
               />
+              <v-flex>
+                <v-file-input label="File Input" @change="uploadImage"/>
+              </v-flex>
+              <v-layout row>
+                <v-flex xs12 sm6 offset-sm3>
+                  <img :src="imageUrl" height="150" />
+                </v-flex>
+              </v-layout>
               <v-text-field v-model="newProduct.quantity" label="Qty" />
               <v-text-field v-model="newProduct.price" label="Price" />
               <v-checkbox
@@ -33,7 +45,7 @@
       </v-dialog>
     </v-row>
     <v-row justify="center" class="mt-8">
-        <h1 class="mb-4">All Products</h1>
+      <h1 class="mb-4">All Products</h1>
       <v-col cols="12">
         <v-data-table
           :headers="productsHeaders"
@@ -42,7 +54,7 @@
         ></v-data-table>
       </v-col>
     </v-row>
-        <v-row>
+    <v-row>
       <v-col cols="12">
         <h1 class="mb-4">All Orders</h1>
         <v-expansion-panels>
@@ -57,20 +69,32 @@
               <v-list>
                 <v-list-item v-for="item in order.order.items" :key="item.id">
                   <v-list-item-content>
-                    <v-list-item-title>{{ item.name }}</v-list-item-title>
+                    <v-list-item-title>{{ item.artistname }}</v-list-item-title>
                   </v-list-item-content>
                   <v-list-item-content>
-                    <v-list-item-subtitle>$ {{ item.price }}</v-list-item-subtitle>
+                    <v-list-item-title>{{ item.albumname }}</v-list-item-title>
                   </v-list-item-content>
                   <v-list-item-content>
-                    <v-list-item-subtitle>{{ item.quantity }}</v-list-item-subtitle>
+                    <v-list-item-subtitle
+                      >$ {{ item.price }}</v-list-item-subtitle
+                    >
+                  </v-list-item-content>
+                  <v-list-item-content>
+                    <v-list-item-subtitle>{{
+                      item.quantity
+                    }}</v-list-item-subtitle>
                   </v-list-item-content>
                   <v-list-item-action>
-                    <v-list-item-subtitle>$ {{ (item.quantity * item.price).toFixed(2) }}</v-list-item-subtitle>
+                    <v-list-item-subtitle
+                      >$
+                      {{
+                        (item.quantity * item.price).toFixed(2)
+                      }}</v-list-item-subtitle
+                    >
                   </v-list-item-action>
                 </v-list-item>
               </v-list>
-            </v-expansion-panel-content>  
+            </v-expansion-panel-content>
           </v-expansion-panel>
         </v-expansion-panels>
       </v-col>
@@ -81,20 +105,25 @@
 <script>
 import { db } from "../plugins/firebase";
 
+
 export default {
   name: "Inventory",
   data() {
     return {
       adding: false,
       newProduct: {
-        name: "",
+        artistname: "",
+        albumname: "",
+        imageUrl: "",
         description: "",
         quantity: 0,
         price: 0,
-        showCatalog: false
+        showCatalog: false,
+        image: null
       },
       productsHeaders: [
-        { text: "Name", value: "name" },
+        { text: "Artist Name", value: "artistname" },
+        { text: "Album Name", value: "albumname" },
         { text: "Description", value: "description" },
         { text: "Qty", value: "quantity" },
         { text: "Price", value: "price" },
@@ -109,11 +138,14 @@ export default {
   methods: {
     clear() {
       (this.newProduct = {
-        name: "",
+        artistname: "",
+        albumname: "",
         description: "",
+        imageUrl: "",
         quantity: 0,
         price: 0,
-        showCatalog: false
+        showCatalog: false,
+        image: null
       }),
         (this.adding = false);
     },
@@ -123,8 +155,8 @@ export default {
     },
     async bind() {
       await this.$bind("products", db.collection("products"));
-      await this.$bind("orders", db.collection("orders"))
-    }
+      await this.$bind("orders", db.collection("orders"));
+    },
   }
 };
 </script>
